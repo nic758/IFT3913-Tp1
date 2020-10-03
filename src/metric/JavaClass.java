@@ -9,14 +9,16 @@ public class JavaClass {
     private float method_DC;
     private final String className;
     private final Console console;
+    private final MetricHelper mh;
     private float CC;
     private float WMC;
     private float class_BC;
     private float method_BC;
 
-    public JavaClass(String name){
-        className = name;
-        console = new Console();
+    public JavaClass(String name, Console c, MetricHelper mh){
+        className = name.trim();
+        console = c;
+        this.mh = mh;
     }
 
     public void generateMetrics(String classBody){
@@ -26,10 +28,10 @@ public class JavaClass {
 
         for (String line:lines) {
 
-            if(isBeforeClass && isComment(line)){
+            if(isBeforeClass && mh.isComment(line)){
                 class_CLOC += 1;
                 continue;
-            }else if(isComment(line)){
+            }else if(mh.isComment(line)){
                 method_CLOC +=1;
                 continue;
             }
@@ -42,9 +44,9 @@ public class JavaClass {
                 continue;
             }
 
-            if(!isProp(line) && !isEndOfClass(line)){
+            if(!mh.isProp(line) && !mh.isEndOfClass(line)){
                 method_LOC+=1;
-                if(hasComment(line)){
+                if(mh.hasComment(line)){
                     method_CLOC+=1;
                 }
                 continue;
@@ -52,46 +54,6 @@ public class JavaClass {
         }
         class_DC = class_CLOC/class_LOC;
         method_DC = method_CLOC/method_LOC;
-    }
-
-    private Boolean hasComment(String s){
-        return s.contains("//") || s.contains("/*");
-    }
-    private Boolean isEndOfClass(String s){
-        return s.equals("}");
-    }
-   private Boolean isProp(String s){
-        var words = s.trim().split(" ");
-        return (words[0].contains("public")||words[0].contains("private")) && words[words.length-1].contains(";");
-   }
-
-    private Boolean isComment(String s)
-    {
-        var arr=s.toCharArray();
-        return isSingleLineComment(arr) || isMultipleLineComment(arr);
-    }
-
-    private Boolean isMultipleLineComment(char[] arr){
-        return  isStartOfMultipleLineComment(arr)
-                || isMiddleOfMultipleLineComment(arr)
-                || isEndOfMultipleLineComment(arr);
-    }
-    private Boolean isStartOfMultipleLineComment (char[] arr)
-    {
-        return (arr[0]=='/'&&arr[1]=='*');
-    }
-    private Boolean isMiddleOfMultipleLineComment (char[] arr){
-        return (arr[0] == 32 && arr[1]=='*' );
-    }
-    private Boolean isEndOfMultipleLineComment(char[] arr){
-        if(arr.length<2){
-            return false;
-        }
-
-        return (arr[arr.length-2]=='*'&&arr[arr.length-1]=='/');
-    }
-    private Boolean isSingleLineComment(char[] arr){
-        return arr[0] == '/' && arr[1]=='/';
     }
 
     public void printMetrics(){
@@ -104,7 +66,7 @@ public class JavaClass {
         +"class_DC: "+method_DC+"\n"
         +"CC: "+CC+"\n"
         +"WMC: "+WMC+"\n"
-        +"class_BC"+class_BC+"\n"
-        +"method_BC"+method_BC);
+        +"class_BC: "+class_BC+"\n"
+        +"method_BC: "+method_BC);
     }
 }

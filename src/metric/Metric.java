@@ -7,12 +7,14 @@ import java.util.List;
 
 public class Metric {
     private Console console;
+    private MetricHelper mh;
     //This is in case we have a .java with more than one class.
     private List<JavaClass> classes;
 
     public Metric() {
         console = new Console();
         classes = new ArrayList<>();
+        mh = new MetricHelper();
     }
 
     /**
@@ -48,7 +50,7 @@ public class Metric {
                 }
 
                 var classeName = lines[i].split("class")[1].split("(?=\\{)")[0];
-                classe = new JavaClass(classeName);
+                classe = new JavaClass(classeName, console, mh);
             }
 
             currentClass += lines[i] ;
