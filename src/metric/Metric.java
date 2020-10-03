@@ -17,9 +17,6 @@ public class Metric {
         mh = new MetricHelper();
     }
 
-    /**
-     * @param filePath
-     */
     public void generateMetrics(String filePath) {
         var rawFile = getFileContent(filePath);
 
@@ -28,13 +25,10 @@ public class Metric {
             return;
         }
 
-        var file = removeEmptylines(rawFile);
+        var file = mh.removeEmptylines(rawFile);
         instantiateJavaClasses(file);
     }
 
-    private String removeEmptylines(String s){
-        return s.replace("\n\n", "\n");
-    }
 
     private void instantiateJavaClasses(String file)
     {
@@ -69,25 +63,15 @@ public class Metric {
         classes.add(classe);
     }
 
-
-    /**
-     * Print metrics to the console.
-     */
     public void printMetrics(){
         for (JavaClass c:classes) {
            c.printMetrics();
         }
     }
 
-    private Boolean isJavaFile(String path) {
-        var list = path.split("\\.");
-
-        return list.length != 0 && list[list.length - 1].equals("java");
-    }
-
     private String getFileContent(String fp) {
         try {
-            if (isJavaFile(fp)) {
+            if (mh.isJavaFile(fp)) {
                 return Files.readString(Paths.get(fp));
             }
 
