@@ -71,4 +71,12 @@ public class MetricHelper {
         }
         return arr[0] == '/' && arr[1]=='/';
     }
+
+    public Boolean isOdd(int n){
+        return !isEven(n);
+    }
+
+    public Boolean isEven(int n){
+        return n%2==0;
+    }
 }

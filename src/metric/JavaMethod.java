@@ -41,9 +41,20 @@ public class JavaMethod extends JavaMember {
     }
 
     public void saveMetricToCSV(String path, String classeName) {
-        var values = new String[]{path, classeName, name, Float.toString(LOC), Float.toString(CLOC)
+        var values = new String[]{path, classeName, formatSignature(name), Float.toString(LOC), Float.toString(CLOC)
                 , Float.toString(DC), Float.toString(BC), Float.toString(CC)};
         super.saveMetricToCSV(path+"methode.csv", values);
+    }
 
+    private String formatSignature(String s){
+        var words = s.replaceAll("\\(|\\)", " ").split(" ");
+        String formatedSignature = words[0];
+
+        for (int i=0; i< words.length; i++) {
+            if (mh.isOdd(i)){
+                formatedSignature += "_".concat(words[i]);
+            }
+        }
+        return formatedSignature;
     }
 }
