@@ -16,8 +16,9 @@ public class JavaMember {
     public float BC;
     public Console console;
     public MetricHelper mh;
+    public String path;
 
-    public JavaMember(String n, Console c, MetricHelper mh) {
+    public JavaMember(String n, Console c, MetricHelper mh, String path) {
         LOC = 0;
         CLOC = 0;
         DC = 0;
@@ -25,6 +26,7 @@ public class JavaMember {
         BC = 0;
         console = c;
         this.mh = mh;
+        this.path = path;
     }
 
     public void generateMetrics(String classBody) {
@@ -43,6 +45,12 @@ public class JavaMember {
         System.out.println("not implemented.");
         System.exit(1);
     }
+
+    /**
+     *
+     * @param path path were the CSV will be stored
+     * @param values values to be stored
+     */
     public void saveMetricToCSV(String path, String[] values){
         try {
             FileWriter output = new FileWriter(new File(path), true);

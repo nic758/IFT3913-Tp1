@@ -15,8 +15,8 @@ public class JavaClass extends JavaMember {
     private Type type;
     public float WMC;
 
-    public JavaClass(String name, Type t, Console c, MetricHelper mh) {
-        super(name, c, mh);
+    public JavaClass(String name, Type t, Console c, MetricHelper mh, String path) {
+        super(name, c, mh, path);
         methods = new ArrayList<>();
         headers = new String[]{"Chemin", "Classe", "Classe_LOC", "Classe_CLOC", "Classe_DC", "Classe_BC",
                 "Classe_WMC",};
@@ -75,7 +75,7 @@ public class JavaClass extends JavaMember {
             if(mh.isInterface(line, type)){
                 //we have and interface
                var name = getMethodName(line);
-               m = new JavaMethod(name, console, mh);
+               m = new JavaMethod(name, console, mh, path);
                //method end on the same line, because it can't be implemented.
                 m.generateMetrics(line);
                methods.add(m);
@@ -88,7 +88,7 @@ public class JavaClass extends JavaMember {
             //we have a method signature
             if (line.contains("public") || line.contains("private") || line.contains("protected")) {
                 var name = getMethodName(line);
-                m = new JavaMethod(name, console, mh);
+                m = new JavaMethod(name, console, mh, path);
             }
             //Standard for end of method
             if (line.equals("    }\n")) {
@@ -137,7 +137,7 @@ public class JavaClass extends JavaMember {
 
     @Override
     public void saveMetricToCSV(String path) {
-        var values = new String[]{path, name, Float.toString(LOC), Float.toString(CLOC)
+        var values = new String[]{this.path, name, Float.toString(LOC), Float.toString(CLOC)
                 , Float.toString(DC), Float.toString(BC), Float.toString(WMC)};
         var p = path.endsWith("/") ? path : path+"/";
         super.saveMetricToCSV(p+"classe.csv", values);

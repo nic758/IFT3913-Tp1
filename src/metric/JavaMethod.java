@@ -4,8 +4,8 @@ public class JavaMethod extends JavaMember {
 
     public float CC;
 
-    public JavaMethod(String name, Console c, MetricHelper m) {
-        super(name, c, m);
+    public JavaMethod(String name, Console c, MetricHelper m, String path) {
+        super(name, c, m, path);
         CC = 1;
         headers = new String[]{"Chemin", "Classe", "Methode", "Methode_LOC", "Methode_CLOC", "Methode_DC",
                 "Methode_BC", "Methode_CC"};
@@ -41,7 +41,7 @@ public class JavaMethod extends JavaMember {
     }
 
     public void saveMetricToCSV(String path, String classeName) {
-        var values = new String[]{path, classeName, formatSignature(name), Float.toString(LOC), Float.toString(CLOC)
+        var values = new String[]{this.path, classeName, formatSignature(name), Float.toString(LOC), Float.toString(CLOC)
                 , Float.toString(DC), Float.toString(BC), Float.toString(CC)};
         super.saveMetricToCSV(path+"methode.csv", values);
     }

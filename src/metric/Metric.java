@@ -26,14 +26,14 @@ public class Metric {
         }
 
         var file = mh.removeEmptyLines(rawFile);
-        instantiateJavaClasses(file);
+        instantiateJavaClasses(file, filePath);
     }
 
     private String getClasseName(String line, Type t) {
         return line.split(t.toString().toLowerCase())[1].split("(?=\\{)")[0];
     }
 
-    private void instantiateJavaClasses(String file) {
+    private void instantiateJavaClasses(String file, String filePath) {
         String[] lines = file.split("(?<=\n)");
 
         String currentClass = "";
@@ -44,7 +44,7 @@ public class Metric {
                     classes.add(classe);
                 }
                 var type = mh.getType(lines[i]);
-                classe = new JavaClass(getClasseName(lines[i], type), type, console, mh);
+                classe = new JavaClass(getClasseName(lines[i], type), type, console, mh, filePath);
             }
 
             currentClass += lines[i];
