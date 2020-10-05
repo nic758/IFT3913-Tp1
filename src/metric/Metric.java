@@ -20,7 +20,7 @@ public class Metric {
     public void generateMetrics(String filePath) {
         var rawFile = getFileContent(filePath);
 
-        if(!rawFile.contains("class")){
+        if (!rawFile.contains("class")) {
             console.printErr("The file has no classes.");
             return;
         }
@@ -29,30 +29,29 @@ public class Metric {
         instantiateJavaClasses(file);
     }
 
+    private String getClasseName(String line, Type t) {
+        return line.split(t.toString().toLowerCase())[1].split("(?=\\{)")[0];
+    }
 
-    private void instantiateJavaClasses(String file)
-    {
+    private void instantiateJavaClasses(String file) {
         String[] lines = file.split("(?<=\n)");
 
         String currentClass = "";
-        JavaClass classe=null;
-        for (int i=0; i<lines.length; i++) {
-            if(lines[i].contains("class"))
-            {
-                if(classe != null){
+        JavaClass classe = null;
+        for (int i = 0; i < lines.length; i++) {
+            if (mh.isClass(lines[i])) {
+                if (classe != null) {
                     classes.add(classe);
                 }
-
-                var classeName = lines[i].split("class")[1].split("(?=\\{)")[0];
-                classe = new JavaClass(classeName, console, mh);
+                var type = mh.getType(lines[i]);
+                classe = new JavaClass(getClasseName(lines[i], type), type, console, mh);
             }
 
-            currentClass += lines[i] ;
+            currentClass += lines[i];
 
             //only a closing bracket, we are at the end.
-            if (lines[i].equals("}\n") || lines[i].equals("}"))
-            {
-                if (classe!=null){
+            if (lines[i].equals("}\n") || lines[i].equals("}")) {
+                if (classe != null) {
                     classe.generateMetrics(currentClass);
                 }
 
@@ -63,14 +62,14 @@ public class Metric {
         classes.add(classe);
     }
 
-    public void printMetrics(){
-        for (JavaClass c:classes) {
-           c.printMetrics();
+    public void printMetrics() {
+        for (JavaClass c : classes) {
+            c.printMetrics();
         }
     }
 
-    public void saveMetricToCSV(String path){
-        for (JavaClass c:classes) {
+    public void saveMetricToCSV(String path) {
+        for (JavaClass c : classes) {
             c.saveMetricToCSV(path);
         }
     }

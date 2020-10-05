@@ -27,6 +27,10 @@ public class MetricHelper {
         return (words[0].contains("public")||words[0].contains("private")) && words[words.length-1].contains(";");
     }
 
+    public Boolean isInterface(String s, Type t){
+        return isProp(s) && t ==Type.INTERFACE;
+    }
+
     public Boolean isComment(String s)
     {
         var arr=s.toCharArray();
@@ -71,6 +75,9 @@ public class MetricHelper {
         }
         return arr[0] == '/' && arr[1]=='/';
     }
+    public Boolean isClass(String s){
+        return s.contains("class") || s.contains("interface") || s.contains("enum");
+    }
 
     public Boolean isOdd(int n){
         return !isEven(n);
@@ -78,5 +85,15 @@ public class MetricHelper {
 
     public Boolean isEven(int n){
         return n%2==0;
+    }
+
+    public Type getType(String line) {
+       if(line.contains("interface")){
+           return Type.INTERFACE;
+       }
+       if(line.contains("enum")){
+           return Type.ENUM;
+       }
+       return Type.CLASS;
     }
 }

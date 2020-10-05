@@ -20,9 +20,3 @@ public class Console {
         System.out.println(msg);
     }
 }
-
-class Console1 {
-    public void test(){
-        System.out.println("Test");//this is a test of comment
-    }
-}
