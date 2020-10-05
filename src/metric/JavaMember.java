@@ -1,6 +1,14 @@
 package metric;
 
+import com.opencsv.CSVWriter;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class JavaMember {
+    public String[] headers;
+
     public float LOC;
     public float CLOC;
     public float DC;
@@ -31,7 +39,22 @@ public class JavaMember {
                 + "BC: " + BC );
     }
 
-    public void saveMetricToCSV(String Path){
-        System.out.println("TODO");
+    public void saveMetricToCSV(String path){
+        System.out.println("not implemented.");
+        System.exit(1);
+    }
+    public void saveMetricToCSV(String path, String[] values){
+        try {
+            FileWriter output = new FileWriter(new File(path), true);
+            var csvWriter = new CSVWriter(output);
+            csvWriter.writeNext(headers);
+            csvWriter.writeNext(values);
+
+            csvWriter.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            System.exit(1);
+        }
+
     }
 }

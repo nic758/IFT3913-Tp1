@@ -50,7 +50,7 @@ public class Metric {
             currentClass += lines[i] ;
 
             //only a closing bracket, we are at the end.
-            if (lines[i].equals("}\n") | lines[i].equals("}"))
+            if (lines[i].equals("}\n") || lines[i].equals("}"))
             {
                 if (classe!=null){
                     classe.generateMetrics(currentClass);
@@ -66,6 +66,12 @@ public class Metric {
     public void printMetrics(){
         for (JavaClass c:classes) {
            c.printMetrics();
+        }
+    }
+
+    public void saveMetricToCSV(String path){
+        for (JavaClass c:classes) {
+            c.saveMetricToCSV(path);
         }
     }
 
