@@ -58,9 +58,11 @@ public class JavaClass extends JavaMember {
                 var words = line.split(" ");
                 var name = "Cannot parse this method name";
 
+                //) is being ignored. i need to put it back.
+                var params = line.substring(line.indexOf('('), line.lastIndexOf(')'))+")";
                 for (String w: words) {
                     if (w.contains("(")){
-                        name = w.split("\\(")[0];
+                        name = w.split("\\(")[0] + params;
                     }
                 }
 

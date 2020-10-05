@@ -1,9 +1,7 @@
 package metric;
 
-//TODOD RENAME
 public class JavaMethod extends JavaMember {
     public float CC;
-
     public JavaMethod(String name, Console c, MetricHelper m) {
         super(name, c, m);
         CC=1;
