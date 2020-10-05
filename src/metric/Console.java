@@ -16,6 +16,10 @@ public class Console {
     public void printInfo(String msg){
         System.out.println(ANSI_BLUE+"INFO: "+ANSI_RESET+msg);
     }
+
+    public void print(String msg){
+        System.out.println(msg);
+    }
 }
 
 class Console1 {

@@ -25,7 +25,7 @@ public class Metric {
             return;
         }
 
-        var file = mh.removeEmptylines(rawFile);
+        var file = mh.removeEmptyLines(rawFile);
         instantiateJavaClasses(file);
     }
 

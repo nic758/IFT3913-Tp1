@@ -1,8 +1,11 @@
 package metric;
 
 public class MetricHelper {
-    public String removeEmptylines(String s){
-        return s.replace("\n\n", "\n");
+    public String removeEmptyLines(String s){
+        return s.replaceAll("(\\n(\\n)*)", "\n");
+    }
+    public Boolean isPredicat(String s){
+        return s.contains("switch") || s.contains("while") || s.contains("if") || s.contains("for");
     }
 
     public Boolean isJavaFile(String path) {
@@ -38,10 +41,18 @@ public class MetricHelper {
 
     private Boolean isStartOfMultipleLineComment (char[] arr)
     {
+        if(arr.length<2)
+        {
+            return false;
+        }
         return (arr[0]=='/'&&arr[1]=='*');
     }
 
     private Boolean isMiddleOfMultipleLineComment (char[] arr){
+        if(arr.length<2)
+        {
+            return false;
+        }
         return (arr[0] == 32 && arr[1]=='*' );
     }
 
@@ -54,6 +65,10 @@ public class MetricHelper {
     }
 
     private Boolean isSingleLineComment(char[] arr){
+        if(arr.length<2)
+        {
+            return false;
+        }
         return arr[0] == '/' && arr[1]=='/';
     }
 }
