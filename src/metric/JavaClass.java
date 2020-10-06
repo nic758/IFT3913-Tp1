@@ -99,6 +99,11 @@ public class JavaClass extends JavaMember {
             }
         }
     }
+    
+    /**
+     * Generates all metrics of a class
+     * @param classBody represents all lines of code of a class and its methods as a string
+     */
 
     public void generateMetrics(String classBody) {
         var lines = classBody.trim().split(("(?<=\n)"));

@@ -16,6 +16,11 @@ public class Metric {
         classes = new ArrayList<>();
         mh = new MetricHelper();
     }
+    
+    /**
+     * Generates metrics of classes and methods of a file
+     * @param filePath a string which contains the path of the file to generate metrics from
+     */
 
     public void generateMetrics(String filePath) {
         var rawFile = getFileContent(filePath);

@@ -10,6 +10,11 @@ public class JavaMethod extends JavaMember {
         headers = new String[]{"Chemin", "Classe", "Methode", "Methode_LOC", "Methode_CLOC", "Methode_DC",
                 "Methode_BC", "Methode_CC"};
     }
+    
+    /**
+     * Generates metrics of a method 
+     * @param methodBody represents all lines of code of method's body as a string
+     */
 
     @Override
     public void generateMetrics(String methodBody) {
