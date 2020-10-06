@@ -25,7 +25,7 @@ public class Metric {
     public void generateMetrics(String filePath) {
         var rawFile = getFileContent(filePath);
 
-        if (!rawFile.contains("class")) {
+        if (!mh.isClass(rawFile)) {
             console.printErr("The file has no classes.");
             return;
         }
