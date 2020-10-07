@@ -23,6 +23,15 @@ public class JavaClass extends JavaMember {
         type = t;
     }
 
+    public JavaClass(String name,  Console c, MetricHelper mh, String path) {
+        super(name, c, mh, path);
+        methods = new ArrayList<>();
+        headers = new String[]{"Chemin", "Classe", "Classe_LOC", "Classe_CLOC", "Classe_DC", "Classe_BC",
+                "Classe_WMC",};
+
+    }
+
+
     private String[] extractMethodsString(String[] lines) {
         var methodsFirstLine = 0;
         var methodsLastLine = lines.length - 1;//because last line is the ending bracket of the class.
