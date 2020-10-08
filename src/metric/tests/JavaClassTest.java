@@ -42,9 +42,17 @@ class JavaClassTest {
     }
 
     @org.junit.jupiter.api.Test
-    void calculateWMCTest() {
+    void calculateWMCTest() throws IOException {
+        Metric m = new Metric();
+        String fc = m.getFileContent("src/metric/Console.java");
+        Console c= new Console();
+        MetricHelper mh = new MetricHelper();
+        JavaClass jc = new JavaClass("Console",c,mh,"src/metric/Console.java");
+        assertEquals(0,jc.calculateWMC());
 
-
+        String testClass = Files.readString(Paths.get("src/metric/tests/TestClass.txt"));
+        JavaClass jc2 = new JavaClass("TestClass",c,mh,"src/metric/tests/TestClass.txt");
+        assertEquals(0,jc2.calculateWMC());
     }
 
 }
