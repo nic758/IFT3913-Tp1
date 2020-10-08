@@ -79,7 +79,7 @@ public class Metric {
         }
     }
 
-    private String getFileContent(String fp) {
+    public String getFileContent(String fp) {
         try {
             if (mh.isJavaFile(fp)) {
                 return Files.readString(Paths.get(fp));

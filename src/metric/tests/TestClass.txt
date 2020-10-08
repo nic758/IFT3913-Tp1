@@ -1,0 +1,269 @@
+package projet3;
+
+
+import java.util.ArrayList;
+
+/**
+ *   BDClientManager cree une base de donnée
+ *   pour les clients du gym
+
+*/
+public class BDClientManager {
+	private static BDClientManager INSTANCE =null;
+	private DataCenter disque = DataCenter.getInstance();
+	private BDClientManager() {
+	}
+
+
+	public static BDClientManager getInstance() {
+		if(INSTANCE==null) INSTANCE=new BDClientManager();
+		return INSTANCE;
+	}
+    // Ajoute un Client A la BD
+	public boolean ajoutClient(Client c) {
+		if(c==null) return false;
+		ArrayList<Client> ListClient=disque.getListClient();
+		if(clientPresent(c.getNum())==true) return false;
+		ListClient.add(c);
+		disque.setListClient(ListClient);
+		return true;
+	}
+    // Retire un client de la BD
+	public boolean deleteClient(int id) {
+		ArrayList<Client> ListClient=disque.getListClient();
+		for(int i=0;i<ListClient.size();i++) {
+			if(ListClient.get(i).getNum()==id) {
+				ListClient.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean updateClient(int id,String nom,String prenom) {
+		Client c=ReturnClient(id);
+		if(c==null) return false;
+		c.setNom(nom);
+		c.setPrenom(prenom);
+
+		return true;
+	}
+
+	public Client ReturnClient(int id) {
+		ArrayList<Client> ListClient=disque.getListClient();
+		for(int i=0;i<ListClient.size();i++) {
+			if(ListClient.get(i).getNum()==id) {
+				return ListClient.get(i);
+			}
+		}
+		return null;
+	}
+    // Verifie si un client est present dans le gym
+	public boolean clientPresent(int id) {
+		ArrayList<Client> ListClient=disque.getListClient();
+		for(int i=0;i<ListClient.size();i++) {
+			if(ListClient.get(i).getNum()==id) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean NumeroValide(int id) {
+		Client c=ReturnClient(id);
+		if(c==null) return false;
+		return true;
+	}
+
+	public boolean isPayed(int id) {
+		Client c =ReturnClient(id);
+		if(c==null) return false;
+		if(c instanceof Pro) {
+			System.out.println("C'est un pro erreur");
+			return false;
+		}
+		Membre m = (Membre) c;
+		if(m.isStatut()) return true;
+		return false;
+	}
+
+	public boolean SuspendreMembre(int id) {
+		Client c =ReturnClient(id);
+		if(c==null) return false;
+		if(c instanceof Pro) {
+			System.out.println("C'est un pro erreur");
+			return false;
+		}
+		Membre m = (Membre) c;
+		m.setStatut(false);
+		return true;
+	}
+
+	public boolean ActiverMembre(int id) {
+		Client c =ReturnClient(id);
+		if(c==null) return false;
+		if(c instanceof Pro) {
+			System.out.println("C'est un pro erreur");
+			return false;
+		}
+		Membre m = (Membre) c;
+		m.setStatut(true);
+		return true;
+	}
+
+	public void envoyerDonneesRnB() { //je sais pas si ça se fait ici + visibilite non pl
+		System.out.println("Voici les données envoyées à RnB (protoype: envoyé"
+				+ " sur la console car simulation) :");
+		System.out.println(this.toStringEnsMembre());
+	}
+
+	public ArrayList<Pro> ListProPaye() {
+
+		ArrayList<Pro> ListPro=new ArrayList<Pro>();
+		ArrayList<Service> ListService=disque.getRepService();
+		for(int i=0;i<ListService.size();i++) {
+			for(int j=0;j<ListService.get(i).getListSeance().size();j++) {
+				Seance s=ListService.get(i).getListSeance().get(j);
+				Pro p =(Pro)ReturnClient(s.getNumPro());
+				if(p==null) return null;//je suppose que c'est bien un pro car getNumPro
+				if(!ListPro.contains(p)) ListPro.add(p);
+			}
+		}
+		return ListPro;
+	}
+
+	public Integer nbServicePro(int numPro) {
+		int nbService=0;
+		int res=0;
+		ArrayList<Service> ListService=disque.getRepService();
+		Client c=ReturnClient(numPro);
+
+		if(c instanceof Membre) return -1;
+		if(c==null) return -1;
+
+		for(int i=0;i<ListService.size();i++) {
+			for(int j=0;j<ListService.get(i).getListSeance().size();j++) {
+				Seance s=ListService.get(i).getListSeance().get(j);
+				if(s.getNumPro()==numPro) {
+					nbService++;
+					res+=nbService*s.nbRecurrence();
+				}
+			}
+		}
+
+		return res;
+
+	}
+
+
+	public ArrayList<Integer> nbServiceChacun() {
+		ArrayList<Integer> nbServiceChacun=new ArrayList<Integer>();
+		ArrayList<Pro> ListPro=ListProPaye();
+		if(ListPro==null) return null;
+		for(int i=0;i<ListPro.size();i++) {
+			nbServiceChacun.add(nbServicePro(ListPro.get(i).getNum()));
+		}
+		return nbServiceChacun;
+	}
+
+	public ArrayList<Double> nbTotalFraisChacun() {
+		 ArrayList<Double> ListTotalFraisChacun = new ArrayList<Double>();
+		 for(int i=0;i<ListProPaye().size();i++) {
+			 ListTotalFraisChacun.add(MontantTransfererProThisWeek(ListProPaye().get(i).getNum()));
+		 }
+		 return ListTotalFraisChacun;
+	}
+
+	public double MontantTransfererProThisWeek(int numPro) {
+		double montantTotal=0;
+		DataCenter disque = DataCenter.getInstance();
+		Client c=null;
+		ArrayList<Service> ListService=disque.getRepService();
+
+		c=ReturnClient(numPro);
+
+		if(c instanceof Membre) return -1;
+		if(c==null) return -1;
+
+		for(int i=0;i<ListService.size();i++) {
+			for(int j=0;j<ListService.get(i).getListSeance().size();j++) {
+				Seance s=ListService.get(i).getListSeance().get(j);
+				if(s.getNumPro()==numPro) {
+					montantTotal+=s.getFraisService()*s.nbRecurrence();
+				}
+			}
+		}
+
+		return montantTotal;
+
+	}
+
+	public int nbTotalPros() {
+		return ListProPaye().size();
+	}
+
+	public int nbTotalService() {
+		int res=0;
+		for(int i=0;i<nbServiceChacun().size();i++) {
+			res+=nbServiceChacun().get(i);
+		}
+		return res;
+	}
+
+	public double TotalFrais() {
+		double total=0;
+		for(int i=0;i<nbTotalFraisChacun().size();i++) {
+			total+=nbTotalFraisChacun().get(i);
+		}
+		return total;
+	}
+
+
+	/*public ArrayList<Membre> returnAllMembre() {
+		Disque disque = Disque.getInstance();
+		ArrayList<Membre> ListMembre = new ArrayList<Membre>();
+		for(int i=0;i<disque.getListClient().size();i++) {
+			if(disque.getListClient().get(i) instanceof Membre) {
+				Membre m=(Membre) disque.getListClient().get(i);
+				ListMembre.add(m);
+			}
+		}
+		return ListMembre;
+	}
+	*/
+	public String toStringEnsClient() {
+		String s="";
+		ArrayList<Client> ListClient=disque.getListClient();
+		for(int i=0;i<ListClient.size();i++) {
+			s+=ListClient.get(i).toString()+"\n";
+		}
+		return s;
+	}
+
+	public String toStringEnsMembre() {
+		String s="";
+		ArrayList<Client> ListClient=disque.getListClient();
+		for(int i=0;i<ListClient.size();i++) {
+			if(ListClient.get(i) instanceof Membre) s+=ListClient.get(i).toString()+"\n";
+		}
+		return s;
+	}
+
+	public String toStringEnsPro() {
+		String s="";
+		ArrayList<Client> ListClient=disque.getListClient();
+		for(int i=0;i<ListClient.size();i++) {
+			if(ListClient.get(i) instanceof Pro) s+=ListClient.get(i).toString()+"\n";
+		}
+		return s;
+	}
+	public String toStringEnsPro(ArrayList<Pro> ListPro) {
+		String s="";
+		for(int i=0;i<ListPro.size();i++) {
+			s+=ListPro.get(i).toString()+"\n";
+		}
+		return s;
+	}
+
+
+}
