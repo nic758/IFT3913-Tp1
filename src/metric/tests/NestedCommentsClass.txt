@@ -1,0 +1,18 @@
+/*
+This is a comment
+// this is a nested comment
+This is another comment
+*/
+
+public class JavaMember {
+    public String[] headers;
+
+    public float LOC;
+    public float CLOC;
+    public float DC;
+    public String name;
+    public float BC;
+    public Console console;
+    public MetricHelper mh;
+    public String path;
+}

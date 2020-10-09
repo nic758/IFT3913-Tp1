@@ -5,8 +5,9 @@ import metric.Metric;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MetricTest {
+
     @org.junit.jupiter.api.Test
-    void getFileContentTest() {
+    void getFileContentTest_Console() {
         Metric m = new Metric();
         String fileContent = m.getFileContent("src/metric/Console.java");
         assertEquals("package metric;\r\n" +
@@ -32,5 +33,12 @@ class MetricTest {
                 "    }\r\n" +
                 "}",fileContent);
 
+    }
+
+    @org.junit.jupiter.api.Test
+    void getContentFileTest_EmptyFile(){
+        Metric m = new Metric();
+        String fileContent = m.getFileContent("src/metric/tests/Empty.java");
+        assertEquals("",fileContent);
     }
 }
