@@ -1,0 +1,33 @@
+Partie 4 :
+
+Fait par : Abderaouf Malek et Leblanc Nicolas
+
+En appliquant l'outil au code JFreechart , on peut tirer les conclusions suivantes :
+
+Classes les moins bien commentées :
+
+CrosshairOverlay : resultat de BC : 0,14
+
+BorderArrangement : resultat de BC : 0,18
+
+DatasetUtils : resultat de BC : 0,21
+
+
+
+Méthodes les moins bien commentées :
+
+notifyListeners : résultat de BC : 0.0158
+
+setNotify : resultat de BC : 0.0238
+
+getNotify : 0.0363
+
+
+
+Une solution envisageable serait d'etre plus concit et pertinent dans la rédaction des commentaires.
+
+Néanmoins ce type de mesure (nombre de lignes de commentaires) n'est pas assez précis pour faire ce genre de déductions ,
+car des classes peuvent etre plus compréhensibles que d'autres et donc contenir moins de commentaires , ce n'est pas pour autant qu'elles sont
+mal commentées.
+
+
