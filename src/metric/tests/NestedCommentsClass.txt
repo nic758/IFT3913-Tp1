@@ -1,12 +1,10 @@
-/*
-This is a comment
-// this is a nested comment
-This is another comment
-*/
-
+/**
+ * This is a comment
+ * // This is nested comment
+ * this is another comment
+ */
 public class JavaMember {
     public String[] headers;
-
     public float LOC;
     public float CLOC;
     public float DC;

@@ -16,20 +16,20 @@ class JavaClassTest {
 
 
     @org.junit.jupiter.api.Test
-    void generateMetricsTest_ClassWithMultipleMethods()  {
+    void generateMetricsTest_ClassWithMultipleMethods() throws IOException {
 
         Metric m = new Metric();
-        String fc = m.getFileContent("src/metric/Console.java");
         Console c= new Console();
+        // On windows comments are in \r\n and in linux are \n , we want to remove both to an empty string
+        String fc = Files.readString(Paths.get("src/metric/tests/Console.txt")).replaceAll("\r\n","\n");
         MetricHelper mh = new MetricHelper();
-        JavaClass jc = new JavaClass("Console",c,mh,"src/metric/Console.java");
+        JavaClass jc = new JavaClass("Console",c,mh,"src/metric/tests/Console.txt");
         jc.generateMetrics(fc);
-        assertEquals(22,jc.LOC);
+        assertEquals(19,jc.LOC);
         assertEquals(3.0,jc.CLOC);
-        assertEquals(0.13636364042758942,jc.DC);
-        assertEquals(0,jc.BC);
-        assertEquals(0,jc.WMC);
-
+        assertEquals(0.15789473056793213,jc.DC);
+        assertEquals(0.052631575614213943,jc.BC);
+        assertEquals(3,jc.WMC);
 
 
     }
@@ -59,9 +59,9 @@ class JavaClassTest {
         MetricHelper mh = new MetricHelper();
         JavaClass jc3 = new JavaClass("NestedCommentsClass", c , mh , "src/metric/tests/NestedCommentsClass.txt");
         jc3.generateMetrics(nestedCommentsClass);
-        assertEquals(18,jc3.LOC);
-        assertEquals(2,jc3.CLOC);
-        assertEquals(0.1111111119389534,jc3.DC);
+        assertEquals(16,jc3.LOC);
+        assertEquals(5,jc3.CLOC);
+        assertEquals(0.3125,jc3.DC);
         assertEquals(0,jc3.BC);
         assertEquals(0,jc3.WMC);
     }

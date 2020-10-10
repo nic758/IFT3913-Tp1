@@ -2,7 +2,11 @@ package metric;
 
 public class MetricHelper {
     public String removeEmptyLines(String s){
-        return s.replaceAll("(\\n(\\n)*)", "\n");
+        var generalString = s;
+        if(System.getProperty("os.name").contains("Windows") ){
+           generalString =  s.replaceAll("(\r\n(\r\n)*)","\n");
+        }
+        return generalString.replaceAll("(\\n(\\n)*)", "\n");
     }
     public Boolean isPredicat(String s){
         return s.contains("switch") || s.contains("while") || s.contains("if") || s.contains("for");

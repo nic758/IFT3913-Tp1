@@ -5,6 +5,10 @@ import metric.Metric;
 import metric.MetricHelper;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MetricHelperTest {
@@ -21,6 +25,14 @@ class MetricHelperTest {
                 "}";
         assertTrue(mh.isPredicat(predic1));
 
+    }
+
+    @Test
+    void removeEmptyLine() throws IOException {
+        MetricHelper mh = new MetricHelper();
+        String emptyLines = Files.readString(Paths.get("src/metric/tests/EmptyLines.txt"));
+        var actual = mh.removeEmptyLines(emptyLines);
+        assertEquals("\ntesting removeEmptyLines method\n",actual);
     }
 
     @Test
