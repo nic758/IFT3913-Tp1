@@ -8,7 +8,11 @@ Si il est nécessaire d'importer le code github pour faire la correction merci d
 
 
 Des librairies externes (com.opencsv.CSVWriter , org.junit.jupiter.api.Assertions) sont utilisées.
-example pour lancer le programme
+## example pour lancer le programme
 ```
 java -jar out/artifacts/IFT3913_Tp1_jar/IFT3913-Tp1.jar -fp src/metric/Console.java
+```
+## example pour lancer le programme et export les données vers un fichier csv (important, le dossier doit exister)
+```
+java -jar out/artifacts/IFT3913_Tp1_jar/IFT3913-Tp1.jar -fp ../IFT3913-Tp1/src/metric/Console.java -o test
 ```
