@@ -3,7 +3,7 @@ package metric;
 public class MetricHelper {
     public String removeEmptyLines(String s){
         var generalString = s;
-        if(System.getProperty("os.name").contains("Windows") ){
+        if(System.getProperty("os.name").contains("Windows") || s.contains("\r\n")){
            generalString =  s.replaceAll("(\r\n(\r\n)*)","\n");
         }
         return generalString.replaceAll("(\\n(\\n)*)", "\n");
