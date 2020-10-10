@@ -74,11 +74,11 @@ class JavaClassTest {
         MetricHelper mh = new MetricHelper();
         JavaClass jc4 = new JavaClass("MethodsWithCommentsClass", c , mh , "src/metric/tests/MethodsWithCommentsClass.txt");
         jc4.generateMetrics(methodsWithCommentsClass);
-        assertEquals(11,jc4.LOC);
+        assertEquals(10,jc4.LOC);
         assertEquals(0,jc4.CLOC);
         assertEquals(0.0,jc4.DC);
         assertEquals(0,jc4.BC);
-        assertEquals(0,jc4.WMC);
+        assertEquals(2,jc4.WMC);
     }
 
 

@@ -3,7 +3,6 @@ public class Example {
     private void method 1 (String s ){
         // code
     }
-
     // comments for method 2
     private int method 2 (int x) {
         // code
